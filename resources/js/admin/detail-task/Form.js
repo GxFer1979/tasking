@@ -2,7 +2,7 @@ import AppForm from '../app-components/Form/AppForm';
 
 Vue.component('detail-task-form', {
     mixins: [AppForm],
-    props:['state','task','user', 'i'],
+    props:['state','task','user'],
 
     data: function() {
         return {
@@ -12,7 +12,7 @@ Vue.component('detail-task-form', {
                 date_begin:  '' ,
                 date_end:  '' ,
                 user:  '' ,
-                 advance:  '' ,
+                advance:  '' ,
 
             }
         }

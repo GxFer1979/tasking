@@ -13,7 +13,6 @@
                 :state="{{$state->toJson()}}"
                 :task="{{$task->toJson()}}"
                 :user="{{$user->toJson()}}"
-                :i="{{$i}}"
 
 
 

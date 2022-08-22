@@ -92,7 +92,7 @@
  <div  class="form-group row align-items-center" >
     <label for="advance" class="col-form-label text-md-right" :class="isFormLocalized ? 'col-md-4' : 'col-md-2'">{{ trans('admin.detail-task.columns.advance') }}</label>
         <div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
-        <input type="text" v-model="form.advance"  value='{{$i}}' class="form-control"  id="advance" name="advance" placeholder="{{ trans('admin.detail-task.columns.advance') }}">
+        <input type="text" v-model="form.advance" class="form-control"  id="advance" name="advance" placeholder="{{ trans('admin.detail-task.columns.advance') }}">
 
         {{-- <div v-if="errors.has('advance')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('advance') }}</div> --}}
     </div>

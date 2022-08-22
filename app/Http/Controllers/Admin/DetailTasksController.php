@@ -88,13 +88,28 @@ class DetailTasksController extends Controller
      */
     public function store(StoreDetailTask $request)
     {
-
+        //return $request;
          // Sanitize input
         $sanitized = $request->getSanitized();
         $sanitized ['state_id']=  $request->getStateId();
-       $sanitized ['task_id']=  $request->getTaskId();
+        $sanitized ['task_id']=  $request->getTaskId();
         $sanitized ['user_id']=  $request->getUserId();
         $detailTask = DetailTask::create($sanitized);
+
+        $detalle = DetailTask::where('task_id','=',$request->getTaskId())->get();
+        $contar=count($detalle);
+        $x=100/$contar;
+        $resultado=ceil($x);
+
+        $detailTask= DetailTask::where('task_id','=',$request->getTaskId())->get();
+        foreach ($detailTask as $dt){
+        $dt->advance = $resultado;
+        $dt->save();
+        }
+
+
+
+
      if ($request->ajax()) {
             return ['redirect' => url('admin/detail-tasks'), 'message' => trans('brackets/admin-ui::admin.operation.succeeded')];
         }
@@ -131,25 +146,11 @@ class DetailTasksController extends Controller
         $task  = Task::all();
         $user = AdminUser::all();
 
-
-
-      $detalle = DetailTask::all()->where('task_id', '=', 3);
-      $contar=count($detalle);
-
-
-
-      $X=100/$contar;
-
-        $i=ceil($X);
-
-
         return view('admin.detail-task.edit', [
             'detailTask' => $detailTask,
             'state' => $state,
             'task' => $task,
             'user' => $user,
-            'i'=>$i,
-
         ]);
     }
 
@@ -162,17 +163,27 @@ class DetailTasksController extends Controller
      */
     public function update(UpdateDetailTask $request, DetailTask $detailTask)
     {
+        $request;
         // Sanitize input
         $sanitized = $request->getSanitized();
         $sanitized ['state_id']=  $request->getStateId();
-        $sanitized ['task_id']=  $request->getStateId();
+        $sanitized ['task_id']=  $request->getTaskId();
         $sanitized ['user_id']=  $request->getUserId();
 
 
-
-
-        // Update changed values DetailTask
         $detailTask->update($sanitized);
+
+          //actualizar sumatoria del detalle a la cabecera
+        $detailTask = DetailTask::where('task_id','=',$request->getTaskId())
+                                        ->where('state_id', '=', 2)->get();
+        $suma = $detailTask->sum('advance');
+        foreach ($detailTask as $dt){
+
+                    $task = Task::find($request->getTaskId());
+                    $task->advance = $suma;
+                    $task->save();
+            }
+
 
         if ($request->ajax()) {
             return [
